@@ -84,7 +84,6 @@ webencodings==0.5.1
 Werkzeug==3.1.3
 wordcloud==1.9.4
 yfinance==0.2.51
-=======
 altair==5.5.0
 altgraph==0.17.4
 attrs==25.3.0
@@ -171,4 +170,3 @@ webencodings==0.5.1
 Werkzeug==3.1.3
 wordcloud==1.9.4
 yfinance==0.2.51
->>>>>>> d3ad2b3662c719160932270b172cfcffc5e297e0
