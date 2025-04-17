@@ -1,0 +1,289 @@
+<!-- home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shariya's Messages 💌</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://emojiapi.dev/api/v1/heart/64.png" type="image/png">
+    <style>
+        :root {
+            --bg-light: #fff0f5;
+            --bg-dark: #1f1f2e;
+            --card-light: #ffffffcc;
+            --card-dark: #2d2d3fcc;
+            --text-light: #4a4a4a;
+            --text-dark: #e4e4e4;
+            --highlight: #ff69b4;
+            --read-light: #e6ffe6cc;
+            --read-dark: #305030cc;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            padding: 30px 15px 80px;
+            background: linear-gradient(to bottom right, var(--bg-light), #ffe6f0);
+            color: var(--text-light);
+            transition: all 0.4s ease;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(to bottom right, var(--bg-dark), #3a2c4f);
+            color: var(--text-dark);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--highlight);
+            margin-bottom: 30px;
+            font-size: 2em;
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            from {
+                text-shadow: 0 0 10px rgba(255, 105, 180, 0.6);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(255, 105, 180, 1);
+            }
+        }
+
+        .top-controls {
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .toggle-theme, .logout-button {
+            background: var(--highlight);
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9em;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: background 0.3s;
+        }
+
+        .toggle-theme:hover, .logout-button:hover {
+            background: #ff478a;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message {
+            background: var(--card-light);
+            border: 2px solid #ffd6e7;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 15px auto;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 8px 24px rgba(255, 192, 203, 0.2);
+            position: relative;
+            transition: transform 0.2s ease, background 0.3s;
+            animation: fadeInUp 0.4s ease both;
+        }
+
+        body.dark-mode .message {
+            background: var(--card-dark);
+            border-color: #a27ebf;
+        }
+
+        .message:hover {
+            transform: translateY(-5px);
+        }
+
+        .read {
+            background: var(--read-light);
+            border-color: #b2f0b2;
+        }
+
+        body.dark-mode .read {
+            background: var(--read-dark);
+            border-color: #56c856;
+        }
+
+        .message p {
+            font-size: 1.15em;
+            margin: 0 0 12px;
+        }
+
+        .message small {
+            color: #888;
+            font-style: italic;
+        }
+
+        body.dark-mode .message small {
+            color: #bbb;
+        }
+
+        .delete-form {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+        }
+
+        .delete-form button {
+            background: transparent;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            color: #ff6f91;
+            transition: color 0.2s;
+        }
+
+        .delete-form button:hover {
+            color: #ff3366;
+        }
+
+        .no-messages {
+            text-align: center;
+            font-size: 1.1em;
+            color: #888;
+            margin-top: 50px;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.9em;
+            color: #aaa;
+            font-style: italic;
+            letter-spacing: 0.5px;
+        }
+
+        body.dark-mode .footer {
+            color: #888;
+        }
+
+        .birthday-message {
+            border: 2px dashed var(--highlight);
+            box-shadow: 0 0 12px rgba(255, 105, 180, 0.4);
+        }
+
+        @media (max-width: 600px) {
+            .message {
+                padding: 15px;
+            }
+
+            .toggle-theme, .logout-button {
+                font-size: 0.75em;
+                padding: 6px 10px;
+            }
+
+            h1 {
+                font-size: 1.6em;
+            }
+        }
+
+        canvas#confetti-canvas {
+            position: fixed;
+            pointer-events: none;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="confetti-canvas"></canvas>
+
+    <div class="top-controls">
+        <form method="POST" action="/logout">
+            <button type="submit" class="logout-button" aria-label="Logout">🚪 Logout</button>
+        </form>
+        <button class="toggle-theme" onclick="toggleTheme()" aria-label="Toggle Theme">🌗 Theme</button>
+    </div>
+
+    <h1>Birthday Shariya for my beautiful girl 🎂💖</h1>
+
+    <div class="message birthday-message">
+        <p><strong>Shariya 💖</strong><br>
+        <em>22 April – Meri khoobsurat ladki ke liye</em></p>
+        <p>
+            Tere bina zindagi adhoori si lage,<br>
+            Tu ho toh har subah ek kahaani ban jaye.<br>
+            Teri muskaan mein hai jadoo sa kuch,<br>
+            Jo dard bhi aaye toh mehka sa lage.<br><br>
+            Har pal mein tu, har lamha mera,<br>
+            Tujhse hi roshan hai ye jahaan mera.<br>
+            Tere saath chalti hai meri har dua,<br>
+            Tu hi toh hai meri khushiyon ka sabab juda.<br><br>
+            Aaj tera din hai, par har din mera tera hai,<br>
+            Tere hone se hi toh dil yeh poora hai.<br>
+            Tu sapna nahi, tu meri sachchai hai,<br>
+            Tu meri duniya, meri har khushi ki wajah hai.<br><br>
+            🎂 Janmdin mubarak ho meri jaan Shariya 💖<br>
+            Tujhse mohabbat har din badhti jaaye — sadaa, har pal ke liye 🌸
+        </p>
+    </div>
+
+    {% if messages %}
+        <p style="text-align:center;">📬 You have {{ messages|length }} message{{ 's' if messages|length > 1 }}!</p>
+        {% for msg in messages %}
+            <div class="message {% if msg.read %}read{% endif %}">
+                <form class="delete-form" method="POST" action="/delete/{{ loop.index0 }}?her={{ request.args.get('her') }}">
+                    <button type="submit" title="Delete Message" aria-label="Delete">🗑️</button>
+                </form>
+                <p>📩 {{ msg.text }}</p>
+                <small>⏰ {{ msg.time }}</small>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="no-messages">No messages yet, but they're on their way! 🌸</p>
+    {% endif %}
+
+    <div class="footer">
+        Made with ❤️ just for you
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+
+            const messages = document.querySelectorAll('.message');
+            if (messages.length > 0) {
+                messages[messages.length - 1].scrollIntoView({ behavior: 'smooth' });
+            }
+
+            const confettiSettings = { target: 'confetti-canvas', max: 120, size: 1.1, animate: true };
+            new ConfettiGenerator(confettiSettings).render();
+        });
+    </script>
+</body>
+</html>

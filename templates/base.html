@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="manifest" href="/static/manifest.json">
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/service-worker.js");
+    }
+  </script>
+  <meta name="theme-color" content="#ff66cc">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Shariya's App{% endblock %}</title>
+  <style>
+    body { font-family: 'Arial'; padding: 20px; background: #fff0f5; }
+  </style>
+</head>
+<body>
+  {% block content %}{% endblock %}
+</body>
+</html>
