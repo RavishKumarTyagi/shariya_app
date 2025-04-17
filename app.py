@@ -3,7 +3,7 @@ import json
 import os
 from datetime import datetime
 
-app = Flask(__name__, template_folder=".")
+app = Flask(__name__)
 app.secret_key = "super_secret_key"
 
 # --- Config and Files ---
