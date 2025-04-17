@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login 💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(to right, #ffe6f0, #e6f7ff);
+      font-family: 'Quicksand', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .login-card {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 2rem;
+      border-radius: 1.5rem;
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(10px);
+      text-align: center;
+      width: 90%;
+      max-width: 350px;
+      z-index: 2;
+      position: relative;
+    }
+
+    h1 {
+      margin-bottom: 1rem;
+      font-size: 1.8rem;
+      color: #6c63ff;
+    }
+
+    input {
+      width: 90%;
+      padding: 0.6rem;
+      margin: 0.5rem 0;
+      border-radius: 0.8rem;
+      border: none;
+      background: #f0f0f0;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    button {
+      padding: 0.6rem 1.5rem;
+      margin-top: 1rem;
+      border: none;
+      border-radius: 1rem;
+      background-color: #6c63ff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #5548d9;
+    }
+
+    a {
+      margin-top: 1rem;
+      display: block;
+      color: #333;
+      font-size: 0.9rem;
+      text-decoration: none;
+    }
+
+    /* Floating Heart Background */
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #ff69b4;
+      transform: rotate(45deg);
+      opacity: 0.7;
+      animation: float 6s infinite;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #ff69b4;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% {
+        bottom: -10%;
+        left: calc(100% * var(--pos));
+        opacity: 0;
+        transform: scale(0.6) rotate(45deg);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.1) rotate(45deg);
+      }
+      100% {
+        bottom: 110%;
+        left: calc(100% * var(--pos));
+        opacity: 0;
+        transform: scale(0.6) rotate(45deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <form class="login-card" method="POST">
+    <h1>🔐 Shariya Login</h1>
+    <input type="text" name="username" placeholder="Username" required />
+    <input type="password" name="password" placeholder="Password" required />
+    <br>
+    <button type="submit">Login 💌</button>
+    {% if show_change_link %}
+      <a href="{{ url_for('change_credentials') }}">⚙️ Change Credentials</a>
+    {% endif %}
+  </form>
+
+  <!-- Floating Hearts for Romance -->
+  <div class="heart" style="--pos: 0.1;"></div>
+  <div class="heart" style="--pos: 0.3; animation-delay: 2s;"></div>
+  <div class="heart" style="--pos: 0.5; animation-delay: 3.5s;"></div>
+  <div class="heart" style="--pos: 0.7; animation-delay: 1.2s;"></div>
+  <div class="heart" style="--pos: 0.9; animation-delay: 4s;"></div>
+</body>
+</html>
