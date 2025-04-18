@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, redirect, session, url_for
 import json
 import os
 from datetime import datetime
+from jinja2 import TemplateSyntaxError
 
 app = Flask(__name__)
 app.secret_key = "super_secret_key"
@@ -98,7 +99,10 @@ def login_or_home():
     if session.get("her_logged_in"):
         return redirect(url_for("home"))
 
-    return render_template("login.html", show_change_link=True)
+    try:
+        return render_template("login.html", show_change_link=True)
+    except TemplateSyntaxError as e:
+        return f"Template error in login.html: {e}", 500
 
 @app.route("/home")
 def home():
@@ -115,13 +119,16 @@ def home():
     love_letter = load_love_letter() if birthday else ""
     birthday_message = "🎉 Happy Birthday, my love! 🎂" if birthday else ""
 
-    return render_template(
-        "home.html",
-        messages=messages,
-        is_birthday=birthday,
-        love_letter=love_letter,
-        birthday_message=birthday_message
-    )
+    try:
+        return render_template(
+            "home.html",
+            messages=messages,
+            is_birthday=birthday,
+            love_letter=love_letter,
+            birthday_message=birthday_message
+        )
+    except TemplateSyntaxError as e:
+        return f"Template error in home.html: {e}", 500
 
 @app.route("/logout", methods=["GET", "POST"])
 def logout():
@@ -154,7 +161,10 @@ def secret():
     love_letter = load_love_letter() if birthday else ""
     today = datetime.today().strftime("%Y-%m-%d")
 
-    return render_template("secret.html", is_birthday=birthday, love_letter=love_letter, today=today)
+    try:
+        return render_template("secret.html", is_birthday=birthday, love_letter=love_letter, today=today)
+    except TemplateSyntaxError as e:
+        return f"Template error in secret.html: {e}", 500
 
 @app.route("/secret-login", methods=["GET", "POST"])
 def secret_login():
@@ -166,7 +176,10 @@ def secret_login():
             return redirect(url_for("secret"))
         return "❌ Incorrect username or password", 403
 
-    return render_template("secret_login.html")
+    try:
+        return render_template("secret_login.html")
+    except TemplateSyntaxError as e:
+        return f"Template error in secret_login.html: {e}", 500
 
 @app.route("/delete/<int:index>", methods=["POST"])
 def delete_message(index):
@@ -195,7 +208,10 @@ def change_password():
         save_password(new_pass)
         return "✅ Password changed successfully!"
 
-    return render_template("change_password.html")
+    try:
+        return render_template("change_password.html")
+    except TemplateSyntaxError as e:
+        return f"Template error in change_password.html: {e}", 500
 
 @app.route("/change-credentials", methods=["GET", "POST"])
 def change_credentials():
@@ -215,7 +231,10 @@ def change_credentials():
         save_password(new_password)
         return "✅ Username and password updated!"
 
-    return render_template("change_credentials.html")
+    try:
+        return render_template("change_credentials.html")
+    except TemplateSyntaxError as e:
+        return f"Template error in change_credentials.html: {e}", 500
 
 # --- Simple test route for debugging ---
 @app.route("/ping")
